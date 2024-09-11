@@ -1,4 +1,4 @@
---- file_editing_bench/nginx__nginx__fastcgi/fastcgi.conf	2024-09-10 19:34:14
+--- file_editing_bench/nginx__nginx__fastcgi/fastcgi.conf	2024-09-10 19:38:46
 +++ file_editing_bench/nginx__nginx__fastcgi/fastcgi.after.conf	2024-09-10 19:33:49
 @@ -21,6 +21,7 @@
  fastcgi_param  SERVER_ADDR        $server_addr;

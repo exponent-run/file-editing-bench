@@ -1,4 +1,4 @@
---- file_editing_bench/dagster-io__dagster__schedule_decorator/schedule_decorator.py	2024-09-10 19:34:14
+--- file_editing_bench/dagster-io__dagster__schedule_decorator/schedule_decorator.py	2024-09-10 19:38:45
 +++ file_editing_bench/dagster-io__dagster__schedule_decorator/schedule_decorator.after.py	2024-09-10 19:32:06
 @@ -39,7 +39,7 @@
  def schedule(
