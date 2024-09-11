@@ -35,7 +35,15 @@ generate_diff() {
     local original_file="$1"
     local modified_file="$2"
     local diff_file="$3"
-    diff -u "$original_file" "$modified_file" > "$diff_file"
+
+    # Generate diff
+    diff -u "$original_file" "$modified_file" > "$diff_file.tmp"
+
+    # Remove timestamps from the diff headers
+    sed '1,2s/\t.*$//' "$diff_file.tmp" > "$diff_file"
+
+    # Clean up temporary file
+    rm "$diff_file.tmp"
 }
 
 # Function to extract repository and file information from URL

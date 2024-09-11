@@ -1,5 +1,5 @@
---- file_editing_bench/keras-team__keras__demo_custom_jax_workflow/demo_custom_jax_workflow.py	2024-09-10 19:38:45
-+++ file_editing_bench/keras-team__keras__demo_custom_jax_workflow/demo_custom_jax_workflow.after.py	2024-09-10 19:37:12
+--- file_editing_bench/keras-team__keras__demo_custom_jax_workflow/demo_custom_jax_workflow.py
++++ file_editing_bench/keras-team__keras__demo_custom_jax_workflow/demo_custom_jax_workflow.after.py
 @@ -34,7 +34,7 @@
          return ops.matmul(inputs, self.w) + self.b
  
