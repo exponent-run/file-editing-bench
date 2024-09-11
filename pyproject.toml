@@ -1,0 +1,9 @@
+[tool.poetry]
+authors = ["Sashank Thupukari <sashank@exponent.run>"]
+
+description = "File editing benchmark"
+name = "file-editing-bench"
+version = "0.1.0-alpha"
+
+[tool.poetry.dependencies]
+python = "^3.12"

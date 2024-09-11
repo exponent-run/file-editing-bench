@@ -1,0 +1,11 @@
+--- file_editing_bench/dagster-io__dagster__schedule_decorator/schedule_decorator.py	2024-09-10 19:34:14
++++ file_editing_bench/dagster-io__dagster__schedule_decorator/schedule_decorator.after.py	2024-09-10 19:32:06
+@@ -39,7 +39,7 @@
+ def schedule(
+     cron_schedule: Union[str, Sequence[str]],
+     *,
+-    job_name: Optional[str] = None,
++    job_name: str = None,
+     name: Optional[str] = None,
+     tags: Optional[Mapping[str, str]] = None,
+     tags_fn: Optional[Callable[[ScheduleEvaluationContext], Optional[Mapping[str, str]]]] = None,
