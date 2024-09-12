@@ -1,0 +1,116 @@
+--- file_editing_bench/exponent-run__exponent__test_graphql_move_chat_to_cloud/test_graphql_move_chat_to_cloud.py
++++ file_editing_bench/exponent-run__exponent__test_graphql_move_chat_to_cloud/test_graphql_move_chat_to_cloud.after.py
+@@ -10,6 +10,86 @@
+ 
+ 
+ async def test_create_cloud_chat_mutation(
++    client: AsyncClient,
++    session: AsyncSession,
++    default_chat: Chat,
++    default_user_headers: dict[str, str],
++    add_devbox_create_response: Callable[[DevboxLookup], None],
++) -> None:
++    # Add GitHub config for the user
++    github_config = GithubConfig(user_id=default_chat.user_id, github_pat="test_token")
++    session.add(github_config)
++    await session.commit()
++
++    mutation = f"""
++        mutation {{
++            createCloudChat {{
++                __typename
++                ... on Chat {{
++                    chatUuid
++                    name
++                }}
++                ... on UnauthenticatedError {{
++                    message
++                }}
++                ... on ChatNotFoundError {{
++                    message
++                }}
++                ... on CloudSessionError {{
++                    message
++                }}
++            }}
++        }}
++    """
++
++    add_devbox_create_response(
++        DevboxLookup(
++            devbox_id="devbox-id",
++            chat_id=default_chat.id,
++        )
++    )
++
++    response = await client.post(
++        "/graphql",
++        json={"query": mutation},
++        headers=default_user_headers,
++    )
++
++    assert response
++    assert response.status_code == status.HTTP_200_OK
++    assert response.json()["data"]
++    assert response.json()["data"]["createCloudChat"]["__typename"] == "Chat"
++    assert (
++        response.json()["data"]["createCloudChat"]["chatUuid"] == default_chat.chat_uuid
++    )
++
++    devbox = await session.scalar(
++        select(DevboxLookup).where(DevboxLookup.chat_id == default_chat.id)
++    )
++    assert devbox
++    assert devbox.chat_id == default_chat.id
++    assert devbox.devbox_id == "devbox-id"
++
++    chat = await session.get(Chat, default_chat.id)
++    assert chat
++    assert chat.mode == ChatMode.CLOUD
++
++    # With existing devbox
++
++    response = await client.post(
++        "/graphql",
++        json={"query": mutation},
++        headers=default_user_headers,
++    )
++
++    assert response
++    assert response.status_code == status.HTTP_200_OK
++    assert response.json()["data"]
++    assert response.json()["data"]["moveChatToCloud"]["__typename"] == "Chat"
++    assert response.json()["data"]["moveChatToCloud"]["chatUuid"]
++
++
++async def test_move_cloud_chat_mutation(
+     client: AsyncClient,
+     session: AsyncSession,
+     default_chat: Chat,
+@@ -89,7 +169,7 @@
+     assert response.json()["data"]["moveChatToCloud"]["chatUuid"]
+ 
+ 
+-async def test_create_cloud_chat_mutation_invalid_chat(
++async def test_move_cloud_chat_mutation_invalid_chat(
+     client: AsyncClient,
+     session: AsyncSession,
+     default_chat: Chat,
+@@ -141,7 +221,7 @@
+     assert devbox is None
+ 
+ 
+-async def test_create_cloud_chat_mutation_github_config_not_found(
++async def test_move_cloud_chat_mutation_github_config_not_found(
+     client: AsyncClient,
+     session: AsyncSession,
+     default_chat: Chat,
+@@ -195,7 +275,7 @@
+     assert devbox is None
+ 
+ 
+-async def test_create_cloud_chat_mutation_cloud_session_error(
++async def test_move_cloud_chat_mutation_cloud_session_error(
+     client: AsyncClient,
+     session: AsyncSession,
+     default_chat: Chat,
