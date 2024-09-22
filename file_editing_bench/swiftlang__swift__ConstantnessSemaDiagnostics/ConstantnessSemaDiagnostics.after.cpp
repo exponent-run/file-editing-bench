@@ -297,7 +297,7 @@ static void diagnoseError(Expr *errorExpr, const ASTContext &astContext,
 /// Given a call \c callExpr, if some or all of its arguments are required to be
 /// constants, check that property on the arguments.
 static void diagnoseConstantArgReqOfCall(const CallExpr *callExpr,
-                                                      const ASTContext &ctx) {
+                                         const ASTContext &ctx) {
   assert(callExpr && callExpr->getType() &&
          "callExpr should have a valid type");
   ValueDecl *calledDecl = callExpr->getCalledValue();
