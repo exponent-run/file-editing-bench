@@ -39,7 +39,7 @@ if TYPE_CHECKING:
 def schedule(
     cron_schedule: Union[str, Sequence[str]],
     *,
-    job_name: str = None,
+    job_name: str,
     name: Optional[str] = None,
     tags: Optional[Mapping[str, str]] = None,
     tags_fn: Optional[Callable[[ScheduleEvaluationContext], Optional[Mapping[str, str]]]] = None,
