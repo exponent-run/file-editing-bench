@@ -1,0 +1,1 @@
+1. Edit the file `original_code.py` to move the `main()` function to be after the `DataProcessor` class, but before the `if __name__ == "__main__":` block.
