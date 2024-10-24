@@ -1,0 +1,15 @@
+1. Edit the file `original_code.py` to add relationships between Order and new models with these exact changes:
+   - Import ForeignKey from sqlalchemy and relationship from sqlalchemy.orm
+   - Add new User model with:
+     - tablename = 'users'
+     - id, email (unique String(255)), and name (String(100)) columns
+     - relationship to orders with back_populates="customer"
+   - Add new OrderItem model with:
+     - tablename = 'order_items'
+     - id, order_id (ForeignKey), product_name (String(200)), quantity, unit_price columns
+     - relationship to order with back_populates="items"
+   - Modify Order model to add:
+     - customer_id column as ForeignKey to users.id
+     - customer relationship to User with back_populates="orders"
+     - items relationship to OrderItem with back_populates="order" and cascade="all, delete-orphan"
+   - Add __repr__ methods to all models using the specified formats

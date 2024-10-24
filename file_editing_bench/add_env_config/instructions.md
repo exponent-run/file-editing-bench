@@ -1,0 +1,19 @@
+1. Edit the file `original_code.py` to add environment variable support with these exact changes:
+   - Add get_env_value helper function that:
+     - Takes key, default, and required parameters
+     - Returns os.environ.get(key) if set, otherwise default
+     - Raises ValueError with message "Required environment variable {key} is not set" if required=True and value not set
+   - Modify load_config to use get_env_value for all settings:
+     - APP_NAME: default='myapp'
+     - APP_DEBUG: convert to bool, default='false'
+     - APP_SECRET_KEY: required=True
+     - DB_HOST: default='localhost'
+     - DB_PORT: convert to int, default='5432'
+     - DB_NAME: default='myapp'
+     - DB_USER: default='admin'
+     - DB_PASSWORD: required=True
+     - SMTP_SERVER: default='smtp.gmail.com'
+     - SMTP_PORT: convert to int, default='587'
+     - SMTP_SENDER: default='noreply@example.com'
+     - Add SMTP_USERNAME: required=True
+     - Add SMTP_PASSWORD: required=True
