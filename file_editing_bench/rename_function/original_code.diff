@@ -1,0 +1,16 @@
+--- file_editing_bench/rename_function/original_code.py
++++ file_editing_bench/rename_function/original_code.after.py
+@@ -10,11 +10,11 @@
+     
+     def process_data(self, data: List[str]) -> List[str]:
+         """Main processing function that handles data transformation."""
+-        cleaned_data = self.clean_strings(data)
++        cleaned_data = self.normalize_strings(data)
+         self.processed_count += len(cleaned_data)
+         return cleaned_data
+     
+-    def clean_strings(self, items: List[str]) -> List[str]:
++    def normalize_strings(self, items: List[str]) -> List[str]:
+         """Cleans and normalizes strings in the input list."""
+         return [item.strip().lower() for item in items if item]
+     
