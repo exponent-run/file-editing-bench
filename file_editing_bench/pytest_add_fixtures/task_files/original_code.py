@@ -1,15 +1,16 @@
 import pytest
 from typing import Dict, List
 
+
 class ShoppingCart:
     def __init__(self):
         self.items: Dict[str, int] = {}
-        
+
     def add_item(self, item: str, quantity: int = 1):
         if quantity <= 0:
             raise ValueError("Quantity must be positive")
         self.items[item] = self.items.get(item, 0) + quantity
-    
+
     def remove_item(self, item: str, quantity: int = 1):
         if item not in self.items:
             raise KeyError(f"Item {item} not in cart")
@@ -21,10 +22,12 @@ class ShoppingCart:
         if self.items[item] == 0:
             del self.items[item]
 
+
 def test_add_item():
     cart = ShoppingCart()
     cart.add_item("apple", 3)
     assert cart.items["apple"] == 3
+
 
 def test_remove_item():
     cart = ShoppingCart()

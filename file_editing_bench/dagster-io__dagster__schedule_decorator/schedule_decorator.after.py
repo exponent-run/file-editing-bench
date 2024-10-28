@@ -1,6 +1,16 @@
 import copy
 from functools import update_wrapper
-from typing import TYPE_CHECKING, Callable, List, Mapping, Optional, Sequence, Set, Union, cast
+from typing import (
+    TYPE_CHECKING,
+    Callable,
+    List,
+    Mapping,
+    Optional,
+    Sequence,
+    Set,
+    Union,
+    cast,
+)
 
 import dagster._check as check
 from dagster._annotations import experimental_param
@@ -42,7 +52,9 @@ def schedule(
     job_name: str,
     name: Optional[str] = None,
     tags: Optional[Mapping[str, str]] = None,
-    tags_fn: Optional[Callable[[ScheduleEvaluationContext], Optional[Mapping[str, str]]]] = None,
+    tags_fn: Optional[
+        Callable[[ScheduleEvaluationContext], Optional[Mapping[str, str]]]
+    ] = None,
     should_execute: Optional[Callable[[ScheduleEvaluationContext], bool]] = None,
     environment_vars: Optional[Mapping[str, str]] = None,
     execution_timezone: Optional[str] = None,
@@ -123,7 +135,9 @@ def schedule(
                 " to ScheduleDefinition. Must provide only one of the two."
             )
         elif tags:
-            validated_tags = normalize_tags(tags, allow_reserved_tags=False, warning_stacklevel=3)
+            validated_tags = normalize_tags(
+                tags, allow_reserved_tags=False, warning_stacklevel=3
+            )
 
         context_param_name = get_context_param_name(fn)
         resource_arg_names: Set[str] = {arg.name for arg in get_resource_args(fn)}
@@ -150,7 +164,9 @@ def schedule(
                 ScheduleExecutionError,
                 lambda: f"Error occurred during the evaluation of schedule {schedule_name}",
             ):
-                context_param = {context_param_name: context} if context_param_name else {}
+                context_param = (
+                    {context_param_name: context} if context_param_name else {}
+                )
                 result = fn(**context_param, **resources)
 
                 if isinstance(result, dict):
@@ -159,7 +175,12 @@ def schedule(
                     evaluated_run_config = copy.deepcopy(result)
                     evaluated_tags = (
                         validated_tags
-                        or (tags_fn and normalize_tags(tags_fn(context), allow_reserved_tags=False))
+                        or (
+                            tags_fn
+                            and normalize_tags(
+                                tags_fn(context), allow_reserved_tags=False
+                            )
+                        )
                         or None
                     )
                     yield RunRequest(
