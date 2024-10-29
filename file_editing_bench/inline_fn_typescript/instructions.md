@@ -1,11 +1,10 @@
 # Inline Function Task
 
-In the file `processUserData.ts`, inline the `validateEmailFormat` helper function directly into the `processUserRegistration` function where it's being called. After inlining, delete the original `validateEmailFormat` function.
+In the file `processUserData.ts`, there is a helper function `validateEmailFormat` that is only used once within the `processUserRegistration` function.
 
-The email validation logic should be inserted directly where the `validateEmailFormat()` function is called in the if statement, and the original helper function should be removed entirely.
+Your task is to:
+1. Remove the `validateEmailFormat` function
+2. Replace the call to `validateEmailFormat` in `processUserRegistration` with the actual implementation of the email validation logic
+3. Keep all the functionality exactly the same
 
-This task requires:
-1. Moving the email validation logic into the `processUserRegistration` function
-2. Removing the original `validateEmailFormat` function declaration
-3. Maintaining the exact same functionality and validation logic
-4. Keeping all type annotations and interfaces unchanged
+The email validation logic should be inlined exactly where the function was called, maintaining the same behavior but removing the separate function definition.

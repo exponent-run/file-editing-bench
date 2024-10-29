@@ -20,6 +20,6 @@ function processUserRegistration(userData: UserData): { success: boolean; messag
     // Process the valid user data
     return {
         success: true,
-        message: `User ${userData.name} successfully registered with email ${userData.email}`
+        message: `User ${userData.name} registered successfully with ${userData.preferences.theme} theme preference`
     };
 }
