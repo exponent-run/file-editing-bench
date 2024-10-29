@@ -1,30 +1,34 @@
 import json
 from datetime import datetime
 from typing import Dict, List, Optional
-import pandas as pd
+from urllib.parse import urlparse
+from pathlib import Path
 
-def load_json_data(filepath: str) -> Dict:
-    """Load data from a JSON file."""
-    with open(filepath, 'r') as f:
+def load_config(config_path: str) -> Dict:
+    """Load configuration from a JSON file."""
+    with open(config_path) as f:
         return json.load(f)
 
-def process_timestamps(data: List[Dict]) -> List[Dict]:
-    """Convert timestamp strings to datetime objects."""
-    for item in data:
-        if 'timestamp' in item:
-            item['timestamp'] = datetime.fromisoformat(item['timestamp'])
-    return data
-
-def calculate_metrics(df: pd.DataFrame) -> Dict[str, float]:
-    """Calculate basic statistical metrics."""
+def parse_url_components(url: str) -> Dict[str, str]:
+    """Extract components from a URL."""
+    parsed = urlparse(url)
     return {
-        'mean': df['value'].mean(),
-        'median': df['value'].median(),
-        'std': df['value'].std()
+        "scheme": parsed.scheme,
+        "netloc": parsed.netloc,
+        "path": parsed.path,
+        "params": parsed.params,
+        "query": parsed.query,
+        "fragment": parsed.fragment
     }
 
-def export_results(data: Dict[str, float], output_path: Optional[str] = None) -> None:
-    """Export results to JSON file."""
-    output_path = output_path or 'results.json'
-    with open(output_path, 'w') as f:
-        json.dump(data, f, indent=2)
+def format_timestamp(timestamp: float) -> str:
+    """Convert a Unix timestamp to ISO format."""
+    return datetime.fromtimestamp(timestamp).isoformat()
+
+def process_log_files(log_dir: str) -> List[Dict]:
+    """Process all log files in a directory."""
+    results = []
+    for log_file in Path(log_dir).glob("*.log"):
+        with open(log_file) as f:
+            results.extend(json.loads(line) for line in f)
+    return results

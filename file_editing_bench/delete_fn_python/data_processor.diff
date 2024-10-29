@@ -1,22 +1,26 @@
 --- a/file_editing_bench/delete_fn_python/task_files/data_processor.py
 +++ b/file_editing_bench/delete_fn_python/data_processor.after.py
-@@ -1,7 +1,6 @@
- import json
+@@ -2,7 +2,6 @@ import json
  from datetime import datetime
  from typing import Dict, List, Optional
--from urllib.parse import urlparse  # This import will need to be removed
- import pandas as pd
+ from urllib.parse import urlparse
+-import requests
+ from pathlib import Path
  
- def load_json_data(filepath: str) -> Dict:
-@@ -9,11 +8,6 @@ def load_json_data(filepath: str) -> Dict:
-     with open(filepath, 'r') as f:
-         return json.load(f)
+ def load_config(config_path: str) -> Dict:
+@@ -22,15 +21,6 @@ def parse_url_components(url: str) -> Dict[str, str]:
+         "fragment": parsed.fragment
+     }
  
--def extract_domain(url: str) -> str:
--    """Extract domain from URL - this function will be deleted."""
--    parsed = urlparse(url)
--    return parsed.netloc
+-def fetch_remote_data(endpoint: str) -> Optional[Dict]:
+-    """Fetch data from a remote endpoint using requests."""
+-    try:
+-        response = requests.get(endpoint, timeout=10)
+-        response.raise_for_status()
+-        return response.json()
+-    except requests.RequestException:
+-        return None
 -
- def process_timestamps(data: List[Dict]) -> List[Dict]:
-     """Convert timestamp strings to datetime objects."""
-     for item in data:
+ def format_timestamp(timestamp: float) -> str:
+     """Convert a Unix timestamp to ISO format."""
+     return datetime.fromtimestamp(timestamp).isoformat()
