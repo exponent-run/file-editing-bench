@@ -1,55 +1,20 @@
-# Add Helper Function for Price Calculation
+# Add Helper Function for Win Percentage Calculation
 
-## Task Description
-Add a helper function called `calculate_discounted_price` to the `order_processor.py` file and refactor the `process_order` method to use this helper function. The helper function should handle the price calculation and discount logic for individual order items.
+Your task is to add a helper function called `calculate_win_percentage` to the file and refactor the main function to use it. The helper function should:
 
-## Specific Requirements
+1. Be added to the file `game_stats.py`
+2. Have the following exact signature:
+   ```python
+   def calculate_win_percentage(wins: int, total_games: int) -> float:
+       """
+       Calculate win percentage from wins and total games.
+       Returns percentage between 0 and 100, rounded to 1 decimal place.
+       """
+   ```
+3. Implement the win percentage calculation that's currently done inline in `analyze_team_performance`
+4. Return 0.0 if total_games is 0
+5. Round the result to 1 decimal place
 
-1. Add the following helper function to the `OrderProcessor` class:
-```python
-def calculate_discounted_price(self, item: OrderItem) -> float:
-    """
-    Calculate the total price for an item including any applicable discounts.
-    
-    Args:
-        item: The OrderItem to calculate the price for
-        
-    Returns:
-        float: The final price after applying any discounts
-        
-    Raises:
-        ValueError: If quantity or unit_price is invalid
-    """
-    if item.quantity <= 0:
-        raise ValueError(f"Invalid quantity for product {item.product_id}")
-    if item.unit_price <= 0:
-        raise ValueError(f"Invalid price for product {item.product_id}")
-    
-    item_price = item.quantity * item.unit_price
-    
-    # Apply category-specific discounts
-    if item.category == "electronics":
-        if item.quantity >= 3:
-            item_price *= 0.85  # 15% bulk discount
-    elif item.category == "books":
-        if item.quantity >= 5:
-            item_price *= 0.90  # 10% bulk discount
-    elif item.category == "clothing":
-        if datetime.now().month == 12:  # Holiday season
-            item_price *= 0.95  # 5% seasonal discount
-    
-    return item_price
-```
+Then modify the `analyze_team_performance` function to use this helper function instead of calculating the win percentage inline.
 
-2. Refactor the `process_order` method to use this helper function instead of containing the price calculation logic directly.
-
-## Success Criteria
-- The helper function must be added exactly as specified above
-- The `process_order` method must be refactored to use the helper function
-- All existing functionality must remain the same
-- All tests must pass
-
-## Notes
-- The helper function encapsulates the price calculation and discount logic that was previously in the `process_order` method
-- The function should be added as a method within the `OrderProcessor` class
-- The original validation and order storage logic should remain in the `process_order` method
+The helper function should be used to make the code more maintainable and reusable, while keeping the exact same behavior as before.
