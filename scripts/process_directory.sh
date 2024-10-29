@@ -18,5 +18,7 @@ for file in "$1"/*; do
     if [ -f "$file" ]; then
         echo "Processing file: $file"
         "$SCRIPT_DIR/input_prompt.sh" "$file"
+	git reset --hard origin/main
+	git clean -fd
     fi
 done
