@@ -1,0 +1,28 @@
+--- a/file_editing_bench/move_fn_to_new_file_python/task_files/data_processor.py
++++ b/file_editing_bench/move_fn_to_new_file_python/data_processor.after.py
+@@ -2,6 +2,7 @@ import pandas as pd
+ from typing import List, Dict
+ import numpy as np
+ from datetime import datetime
++from validation_utils import validate_transaction_dates
+ 
+ def process_sales_data(data: pd.DataFrame) -> pd.DataFrame:
+     """Process raw sales data into aggregated format"""
+@@ -17,17 +18,6 @@ def calculate_revenue_impact(sales: pd.DataFrame,
+     merged['profit'] = (merged['price'] - merged['cost']) * merged['quantity']
+     return merged.groupby('category')['profit'].sum().to_dict()
+ 
+-def validate_transaction_dates(dates: List[str]) -> List[bool]:
+-    """Validate a list of transaction dates"""
+-    valid_dates = []
+-    for date_str in dates:
+-        try:
+-            datetime.strptime(date_str, '%Y-%m-%d')
+-            valid_dates.append(True)
+-        except ValueError:
+-            valid_dates.append(False)
+-    return valid_dates
+-
+ def main():
+     # Example usage
+     sales_data = pd.DataFrame({
