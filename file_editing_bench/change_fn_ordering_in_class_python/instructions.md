@@ -1,21 +1,15 @@
-# Task: Reorder Methods in DataProcessor Class
+# Function Ordering Task
 
-Reorder the methods in the `DataProcessor` class to follow this logical grouping and sequence:
+Reorder the methods in the `DataProcessor` class to follow a logical sequence. The methods should be ordered as follows:
 
-1. First should be the constructor (`__init__`)
-2. Then public interface methods in order of typical usage:
-   - get_raw_data
-   - process_data
-   - transform_data
-   - save_results
-   - clear_cache
-3. Finally, private helper methods (prefixed with _) at the bottom:
-   - _validate_data_source
-   - _load_cache
+1. `__init__` should be the first method (as per Python conventions)
+2. Main public interface methods should come next, ordered by importance:
+   - `process_batch` (main processing method)
+   - `get_stats` (public status method)
+   - `cleanup_temp_files` (public utility method)
+3. Private implementation methods should come last, in the order they are used in the processing flow:
+   - `validate_data` (first step in processing)
+   - `transform_data` (second step in processing)
+   - `save_results` (final step in processing)
 
-The content and implementation of each method should remain exactly the same - only their order in the file should change.
-
-This ordering reflects a more logical organization where:
-- Constructor is first
-- Public methods are grouped together
-- Private helper methods are grouped at the end
+Do not modify any of the method implementations - only change their order within the class.

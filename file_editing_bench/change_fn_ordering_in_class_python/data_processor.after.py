@@ -1,59 +1,49 @@
 class DataProcessor:
-    def __init__(self, data_source):
-        """Initialize the DataProcessor with a data source."""
-        self.data_source = data_source
-        self.processed_data = None
-        self._load_cache()
+    def __init__(self, temp_dir="/tmp"):
+        """Initialize the data processor."""
+        self.temp_dir = temp_dir
+        self.processed_count = 0
 
-    def get_raw_data(self):
-        """Retrieve the raw data from the source."""
-        with open(self.data_source, 'r') as f:
-            return f.readlines()
+    def process_batch(self, data_batch):
+        """Process a batch of data records."""
+        validated_data = self.validate_data(data_batch)
+        transformed = self.transform_data(validated_data)
+        return self.save_results(transformed)
 
-    def process_data(self):
-        """Process the raw data into a structured format."""
-        raw_data = self.get_raw_data()
-        self.processed_data = {
-            str(i): float(line.strip())
-            for i, line in enumerate(raw_data)
-            if line.strip()
+    def get_stats(self):
+        """Return processing statistics."""
+        return {
+            'processed_count': self.processed_count,
+            'temp_dir': self.temp_dir
         }
-        return self.processed_data
 
-    def transform_data(self):
-        """Transform the processed data using complex calculations."""
-        if not self.processed_data:
-            raise ValueError("No data has been processed yet!")
-        
-        transformed = {}
-        for key, value in self.processed_data.items():
-            transformed[key] = value * 2.5 + 100
-        return transformed
+    def cleanup_temp_files(self):
+        """Remove any temporary files created during processing."""
+        import os
+        for file in os.listdir(self.temp_dir):
+            if file.endswith('.tmp'):
+                os.remove(os.path.join(self.temp_dir, file))
 
-    def save_results(self, transformed_data):
-        """Save the transformed data to the output file."""
-        with open(f"{self.data_source}_output.txt", 'w') as f:
-            for key, value in transformed_data.items():
-                f.write(f"{key}: {value}\n")
+    def validate_data(self, data):
+        """Validate the input data format."""
+        valid_records = []
+        for record in data:
+            if all(k in record for k in ['id', 'raw_value', 'timestamp']):
+                valid_records.append(record)
+        return valid_records
 
-    def clear_cache(self):
-        """Clear the internal cache."""
-        self._cache = None
-        try:
-            import os
-            os.remove(self.data_source + '.cache')
-        except FileNotFoundError:
-            pass
+    def transform_data(self, data):
+        """Transform the validated data into the required format."""
+        return [
+            {
+                'id': item['id'],
+                'value': item['raw_value'] * 2,
+                'timestamp': item['timestamp'].isoformat()
+            }
+            for item in data
+        ]
 
-    def _validate_data_source(self):
-        """Internal method to validate the data source format."""
-        if not self.data_source.endswith('.txt'):
-            raise ValueError("Data source must be a .txt file")
-
-    def _load_cache(self):
-        """Internal method to load cache from data source."""
-        try:
-            with open(self.data_source + '.cache', 'r') as f:
-                self._cache = f.read()
-        except FileNotFoundError:
-            self._cache = None
+    def save_results(self, processed_data):
+        """Save the processed results to storage."""
+        self.processed_count += len(processed_data)
+        return [item.get('id') for item in processed_data]
