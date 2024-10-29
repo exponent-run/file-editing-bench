@@ -1,0 +1,40 @@
+--- a/file_editing_bench/extract_fn_to_helper_typescript/task_files/analytics.ts
++++ b/file_editing_bench/extract_fn_to_helper_typescript/analytics.after.ts
+@@ -11,18 +11,11 @@ interface UserEvent {
+ }
+ 
+ export class AnalyticsProcessor {
+-  processUserEngagement(events: UserEvent[]): { 
+-    totalEngagement: number;
+-    avgSessionTime: number;
+-    topPlatforms: string[];
+-    activeUsers: string[];
+-  } {
++  private calculatePlatformMetrics(events: UserEvent[]): [{ [key: string]: number }, number, Set<string>] {
+     const uniqueUsers = new Set<string>();
+     let totalSessionTime = 0;
+     const platformCounts: { [key: string]: number } = {};
+     
+-    // This block of code should be extracted to a helper function called "calculatePlatformMetrics"
+-    // that takes events array as parameter and returns [platformCounts, totalTime, userSet]
+     for (const event of events) {
+       const platform = event.metadata.platform;
+       platformCounts[platform] = (platformCounts[platform] || 0) + 1;
+@@ -36,6 +29,17 @@ export class AnalyticsProcessor {
+       }
+     }
+ 
++    return [platformCounts, totalSessionTime, uniqueUsers];
++  }
++
++  processUserEngagement(events: UserEvent[]): { 
++    totalEngagement: number;
++    avgSessionTime: number;
++    topPlatforms: string[];
++    activeUsers: string[];
++  } {
++    const [platformCounts, totalSessionTime, uniqueUsers] = this.calculatePlatformMetrics(events);
++
+     const sortedPlatforms = Object.entries(platformCounts)
+       .sort(([, a], [, b]) => b - a)
+       .slice(0, 3)
