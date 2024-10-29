@@ -1,0 +1,50 @@
+--- a/file_editing_bench/rename_variables_across_fn_ruby/task_files/order_processor.rb
++++ b/file_editing_bench/rename_variables_across_fn_ruby/order_processor.after.rb
+@@ -1,11 +1,11 @@
+ class OrderProcessor
+   def initialize
+-    @d = 0
++    @discount_amount = 0
+   end
+ 
+   def process_order(items)
+     items.each do |item|
+-      @d += calculate_item_discount(item)
++      @discount_amount += calculate_item_discount(item)
+     end
+     
+     apply_final_adjustments
+@@ -13,24 +13,24 @@ class OrderProcessor
+ 
+   def calculate_item_discount(item)
+     if item.on_sale?
+-      d = item.price * 0.1
+-      record_discount(d)
+-      d
++      discount_amount = item.price * 0.1
++      record_discount(discount_amount)
++      discount_amount
+     else
+       0
+     end
+   end
+ 
+   def apply_final_adjustments
+-    if @d > 100
+-      @d = 100
++    if @discount_amount > 100
++      @discount_amount = 100
+     end
+-    @d
++    @discount_amount
+   end
+ 
+   private
+ 
+-  def record_discount(d)
+-    puts "Recording discount of #{d}"
++  def record_discount(discount_amount)
++    puts "Recording discount of #{discount_amount}"
+   end
+ end
+\ No newline at end of file
