@@ -1,0 +1,11 @@
+--- a/file_editing_bench/rename_function_typescript/task_files/userService.ts
++++ b/file_editing_bench/rename_function_typescript/userService.after.ts
+@@ -12,7 +12,7 @@ export class UserService {
+     return this.db.findOne('users', { id: userId });
+   }
+ 
+-  async p(userId: string, preferences: Partial<UserPreferences>): Promise<void> {
++  async updateUserPreferences(userId: string, preferences: Partial<UserPreferences>): Promise<void> {
+     const user = await this.getUser(userId);
+     if (!user) {
+       throw new Error('User not found');
