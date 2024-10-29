@@ -1,0 +1,33 @@
+--- a/file_editing_bench/rename_global_variable_ruby/task_files/game_config.rb
++++ b/file_editing_bench/rename_global_variable_ruby/game_config.after.rb
+@@ -1,17 +1,17 @@
+ # Global configuration for the Pixel Adventure game engine
+-$screen_res = {width: 1920, height: 1080}
++$display_resolution = {width: 1920, height: 1080}
+ 
+ module GameEngine
+   class Display
+     def self.initialize_screen
+-      puts "Initializing display with resolution #{$screen_res[:width]}x#{$screen_res[:height]}"
+-      @window_size = $screen_res
++      puts "Initializing display with resolution #{$display_resolution[:width]}x#{$display_resolution[:height]}"
++      @window_size = $display_resolution
+     end
+   end
+ 
+   class AssetLoader
+     def self.scale_sprites
+-      scale_factor = ($screen_res[:width] / 1920.0)
++      scale_factor = ($display_resolution[:width] / 1920.0)
+       puts "Scaling game assets by factor of #{scale_factor}"
+     end
+   end
+@@ -23,6 +23,6 @@ if __FILE__ == $PROGRAM_NAME
+   GameEngine::AssetLoader.scale_sprites
+   
+   # Allow runtime resolution changes
+-  $screen_res = {width: 1280, height: 720}
++  $display_resolution = {width: 1280, height: 720}
+   GameEngine::Display.initialize_screen
+ end
+\ No newline at end of file
