@@ -1,41 +1,28 @@
-import json
-from typing import Dict, List, Any
+from typing import List, Dict
 from datetime import datetime
 
 
-def process_and_standardize_records(data: List[Dict[str, Any]]) -> List[Dict[str, Any]]:
+def standardize_records(records: List[Dict]) -> List[Dict]:
+    """Process and standardize records by:
+    - Filtering out empty records
+    - Adding timestamps
+    - Converting string values to uppercase
     """
-    Process a list of data records by:
-    1. Removing any empty records
-    2. Adding a timestamp field
-    3. Converting all string values to uppercase
-    """
-    processed = []
-    for record in data:
-        if record:  # Skip empty records
-            # Add timestamp
-            record["processed_at"] = datetime.now().isoformat()
-
-            # Convert string values to uppercase
-            processed_record = {}
-            for key, value in record.items():
-                if isinstance(value, str):
-                    processed_record[key] = value.upper()
-                else:
-                    processed_record[key] = value
-
-            processed.append(processed_record)
-
-    return processed
+    result = []
+    for record in records:
+        if record and validate_record(record):
+            processed = record.copy()
+            processed['timestamp'] = datetime.now().isoformat()
+            processed['type'] = processed['type'].upper()
+            result.append(processed)
+    return result
 
 
-def load_json_file(filepath: str) -> Dict[str, Any]:
-    """Load and parse a JSON file."""
-    with open(filepath, "r") as f:
-        return json.load(f)
+def validate_record(record: Dict) -> bool:
+    """Validate that a record has all required fields"""
+    return all(k in record for k in ['id', 'value', 'type'])
 
 
-def save_json_file(data: Dict[str, Any], filepath: str) -> None:
-    """Save data to a JSON file."""
-    with open(filepath, "w") as f:
-        json.dump(data, f, indent=2)
+def sort_records(records: List[Dict], key: str = 'id') -> List[Dict]:
+    """Sort records by the specified key"""
+    return sorted(records, key=lambda x: x.get(key, ''))

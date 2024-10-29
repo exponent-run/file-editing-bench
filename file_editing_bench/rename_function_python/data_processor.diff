@@ -1,11 +1,26 @@
 --- a/file_editing_bench/rename_function_python/task_files/data_processor.py
 +++ b/file_editing_bench/rename_function_python/data_processor.after.py
-@@ -3,7 +3,7 @@ from typing import Dict, List, Any
+@@ -2,7 +2,7 @@ from typing import List, Dict
  from datetime import datetime
  
  
--def p(data: List[Dict[str, Any]]) -> List[Dict[str, Any]]:
-+def process_and_standardize_records(data: List[Dict[str, Any]]) -> List[Dict[str, Any]]:
-     """
-     Process a list of data records by:
-     1. Removing any empty records
+-def p(records: List[Dict]) -> List[Dict]:
++def standardize_records(records: List[Dict]) -> List[Dict]:
+     """Process and standardize records by:
+     - Filtering out empty records
+     - Adding timestamps
+@@ -18,11 +18,11 @@ def p(records: List[Dict]) -> List[Dict]:
+     return result
+ 
+ 
+-
+ def validate_record(record: Dict) -> bool:
+     """Validate that a record has all required fields"""
+     return all(k in record for k in ['id', 'value', 'type'])
+ 
++
+ def sort_records(records: List[Dict], key: str = 'id') -> List[Dict]:
+     """Sort records by the specified key"""
+-    return sorted(records, key=lambda x: x.get(key, ''))
++    return sorted(records, key=lambda x: x.get(key, ''))
+\ No newline at end of file
