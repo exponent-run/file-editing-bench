@@ -13,4 +13,4 @@ fi
 # Read the file content and escape any special characters
 PROMPT_CONTENT=$(cat "$1" | sed 's/"/\\"/g')
 
-exponent shell --autorun --prod --depth 20 --prompt "$PROMPT_CONTENT"
+exponent shell --autorun --headless --prod --depth 20 --prompt "$PROMPT_CONTENT"
