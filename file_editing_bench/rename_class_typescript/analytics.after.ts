@@ -1,69 +1,71 @@
-import { Database } from './types';
-
-interface MetricPayload {
-  name: string;
-  value: number;
-  timestamp: number;
-  tags?: Record<string, string>;
+interface DataPoint {
+    timestamp: number;
+    value: number;
 }
 
-// Helper class for data validation
-class ValidationUtils {
-  static isValidMetricName(name: string): boolean {
-    return /^[a-zA-Z][a-zA-Z0-9_\.]*$/.test(name);
-  }
-
-  static isValidTimestamp(timestamp: number): boolean {
-    return timestamp > 0 && timestamp <= Date.now();
-  }
-}
-
-// This class processes and batches metrics
-class MetricBatchProcessor {
-  private db: Database;
-  private readonly batchSize: number = 100;
-  private metricQueue: MetricPayload[] = [];
-  
-  constructor(db: Database, batchSize?: number) {
-    this.db = db;
-    if (batchSize) this.batchSize = batchSize;
-  }
-
-  async addMetric(metric: MetricPayload): Promise<void> {
-    if (!ValidationUtils.isValidMetricName(metric.name)) {
-      throw new Error('Invalid metric name');
-    }
-    if (!ValidationUtils.isValidTimestamp(metric.timestamp)) {
-      throw new Error('Invalid timestamp');
+class Util {
+    static formatTimestamp(timestamp: number): string {
+        return new Date(timestamp).toISOString();
     }
 
-    this.metricQueue.push(metric);
-    
-    if (this.metricQueue.length >= this.batchSize) {
-      await this.flush();
+    static calculateAverage(values: number[]): number {
+        return values.reduce((a, b) => a + b, 0) / values.length;
     }
-  }
-
-  async flush(): Promise<void> {
-    if (this.metricQueue.length === 0) return;
-
-    const metrics = [...this.metricQueue];
-    this.metricQueue = [];
-    
-    await this.db.batchInsert('metrics', metrics);
-  }
-
-  getQueueSize(): number {
-    return this.metricQueue.length;
-  }
 }
 
-// Analytics dashboard configuration
-class DashboardConfig {
-  constructor(
-    public readonly refreshInterval: number = 60000,
-    public readonly defaultTimeRange: string = '24h'
-  ) {}
+class TimeSeriesProcessor {
+    private dataPoints: DataPoint[] = [];
+    private readonly maxDataPoints: number;
+
+    constructor(maxPoints: number = 1000) {
+        this.maxDataPoints = maxPoints;
+    }
+
+    addDataPoint(value: number): void {
+        const point: DataPoint = {
+            timestamp: Date.now(),
+            value: value
+        };
+
+        this.dataPoints.push(point);
+        if (this.dataPoints.length > this.maxDataPoints) {
+            this.dataPoints.shift();
+        }
+    }
+
+    getAverageValue(): number {
+        return Util.calculateAverage(this.dataPoints.map(p => p.value));
+    }
+
+    getFormattedData(): string[] {
+        return this.dataPoints.map(point => 
+            `${Util.formatTimestamp(point.timestamp)}: ${point.value}`
+        );
+    }
 }
 
-export { MetricBatchProcessor, ValidationUtils, DashboardConfig, MetricPayload };
+class DataVisualizer {
+    private readonly processor: TimeSeriesProcessor;
+
+    constructor(maxDataPoints: number) {
+        this.processor = new TimeSeriesProcessor(maxDataPoints);
+    }
+
+    addValue(value: number): void {
+        this.processor.addDataPoint(value);
+    }
+
+    generateReport(): string {
+        const avg = this.processor.getAverageValue();
+        const formattedData = this.processor.getFormattedData();
+        
+        return `
+Data Points:
+${formattedData.join('\n')}
+
+Average Value: ${avg}
+        `.trim();
+    }
+}
+
+export { DataPoint, Util, TimeSeriesProcessor, DataVisualizer };
