@@ -1,0 +1,3 @@
+In the file `data_processor.py`, there is a class named `X` that handles record management with functionality for adding records, retrieving records by timestamp, and clearing old records. Rename this class to `RecordManager` to better reflect its purpose and functionality.
+
+The class should be renamed without changing any of its functionality or implementation details. Make sure to keep the exact same indentation and code style.

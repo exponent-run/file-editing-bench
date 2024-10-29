@@ -1,0 +1,11 @@
+--- a/file_editing_bench/rename_class_python/task_files/data_processor.py
++++ b/file_editing_bench/rename_class_python/data_processor.after.py
+@@ -14,7 +14,7 @@ class ConfigManager:
+     def get_setting(self, key: str) -> Optional[str]:
+         return self.settings.get(key)
+ 
+-class X:
++class RecordManager:
+     def __init__(self):
+         self.records: List[Dict] = []
+         self.last_processed = None
