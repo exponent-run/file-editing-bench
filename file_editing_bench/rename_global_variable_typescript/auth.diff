@@ -1,0 +1,47 @@
+--- a/file_editing_bench/rename_global_variable_typescript/task_files/auth.ts
++++ b/file_editing_bench/rename_global_variable_typescript/auth.after.ts
+@@ -1,7 +1,7 @@
+ import { UserSession } from './types';
+ 
+ // Global configuration for authentication
+-const maxLoginAttempts = 3;
++const MAX_LOGIN_ATTEMPTS = 3;
+ 
+ export class AuthenticationService {
+     private currentAttempts: number = 0;
+@@ -11,7 +11,7 @@ export class AuthenticationService {
+     }
+ 
+     async authenticateUser(username: string, password: string): Promise<UserSession | null> {
+-        if (this.currentAttempts >= maxLoginAttempts) {
++        if (this.currentAttempts >= MAX_LOGIN_ATTEMPTS) {
+             throw new Error('Account locked due to too many failed attempts');
+         }
+ 
+@@ -22,21 +22,21 @@ export class AuthenticationService {
+                 id: '123',
+                 username,
+                 lastLoginTimestamp: Date.now(),
+-                remainingAttempts: maxLoginAttempts
++                remainingAttempts: MAX_LOGIN_ATTEMPTS
+             };
+         }
+ 
+         this.currentAttempts++;
+-        const remainingTries = maxLoginAttempts - this.currentAttempts;
++        const remainingTries = MAX_LOGIN_ATTEMPTS - this.currentAttempts;
+         throw new Error(`Invalid credentials. ${remainingTries} attempts remaining before lockout`);
+     }
+ 
+     private resetAttempts(): void {
+         this.currentAttempts = 0;
+-        console.log(`Login attempts reset. Maximum of ${maxLoginAttempts} attempts allowed`);
++        console.log(`Login attempts reset. Maximum of ${MAX_LOGIN_ATTEMPTS} attempts allowed`);
+     }
+ }
+ 
+ export function getMaxAttempts(): number {
+-    return maxLoginAttempts;
++    return MAX_LOGIN_ATTEMPTS;
+ }
+\ No newline at end of file
