@@ -1,1 +1,0 @@
-1. Edit the file `original_code.py` to add a logging statement in the `process_data` method of the `DataProcessor` class. Add exactly this line after incrementing processed_count and before returning: `logger.info("Processed %d items in DataProcessor '%s'", len(cleaned_data), self.name)`

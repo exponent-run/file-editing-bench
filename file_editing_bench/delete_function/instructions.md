@@ -1,1 +1,0 @@
-1. Edit the file `original_code.py` to remove the deprecated method called `deprecated_method` from the `DataProcessor` class.

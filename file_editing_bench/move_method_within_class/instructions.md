@@ -1,1 +1,0 @@
-1. Edit the file `original_code.py` to move the `clear_stats` method to be the last method in the `DataProcessor` class (after the `validate_input` method).

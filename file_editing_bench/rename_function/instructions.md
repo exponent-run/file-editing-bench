@@ -1,1 +1,0 @@
-1. Edit the file `original_code.py` to rename the method `clean_strings` to `normalize_strings` in the `DataProcessor` class. Make sure to update both the method definition and any calls to this method.
