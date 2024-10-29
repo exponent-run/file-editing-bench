@@ -1,17 +1,10 @@
-# Delete Legacy Admin Check Function
+# Delete Permission Check Function
 
-## Task
+In the `userService.ts` file, there is a permission check function called `validateUserPermissions` that is used inside the `updateUserProfile` method. Your task is to:
 
-In the file `authService.ts`, remove the legacy special admin check functionality. This includes:
+1. Delete the entire `validateUserPermissions` helper function
+2. Remove the permission check from the `updateUserProfile` method (specifically, remove the if-statement that uses `validateUserPermissions`)
 
-1. Delete the `isSpecialAdminUser` method
-2. Remove the call to `isSpecialAdminUser` in the `validateUserAccess` method, including the if statement and its block
-3. Remove the `adminEmails` private field as it's no longer needed
+The permission check is no longer needed as the service will handle permissions at a different layer.
 
-The task represents a common real-world scenario where legacy code needs to be removed as part of a migration to a new authentication system.
-
-## Notes
-- Keep all other functionality intact
-- Maintain proper TypeScript syntax
-- Preserve all other methods and their implementations
-- Keep all imports and exports as they are
+Note: Make sure to maintain proper formatting and not introduce any additional changes to the code.

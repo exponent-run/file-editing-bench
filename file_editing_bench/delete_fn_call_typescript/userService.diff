@@ -1,0 +1,23 @@
+--- a/file_editing_bench/delete_fn_call_typescript/task_files/userService.ts
++++ b/file_editing_bench/delete_fn_call_typescript/userService.after.ts
+@@ -1,20 +1,8 @@
+ import { User, UserRole } from './types';
+ 
+ export class UserService {
+-    private validateUserPermissions(user: User, requiredRole: UserRole): boolean {
+-        if (!user || !user.role) {
+-            return false;
+-        }
+-        
+-        return user.role >= requiredRole;
+-    }
+-
+     async updateUserProfile(userId: string, profileData: Partial<User>): Promise<User> {
+         const user = await this.getUserById(userId);
+-        
+-        if (!this.validateUserPermissions(user, UserRole.USER)) {
+-            throw new Error('Insufficient permissions to update profile');
+-        }
+ 
+         // Remove sensitive fields that shouldn't be updated
+         delete profileData.role;
