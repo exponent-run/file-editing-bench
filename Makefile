@@ -3,5 +3,5 @@
 download:
 	./scripts/download.sh
 
-generate:
-	./scripts/generate.sh
+create_diffs:
+	@./scripts/create_diffs.sh
