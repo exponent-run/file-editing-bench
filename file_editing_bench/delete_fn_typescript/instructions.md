@@ -1,5 +1,5 @@
 # Delete Function Task
 
-In the file `userService.ts`, delete the `sendPasswordReset` function and its corresponding import that is no longer used after the function is removed.
+In the file `analytics.ts`, delete the `calculateSessionDuration` function and its corresponding import `formatDistance` from 'date-fns' that is no longer used after the function is removed.
 
-Note that the `sendWelcomeEmail` import is still used by the `createUser` function, so it should not be removed.
+Note that since `calculateSessionDuration` is the only function using the `formatDistance` import, this import statement can be safely removed.

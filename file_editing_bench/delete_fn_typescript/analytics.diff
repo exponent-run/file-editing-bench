@@ -1,0 +1,19 @@
+--- a/file_editing_bench/delete_fn_typescript/task_files/analytics.ts
++++ b/file_editing_bench/delete_fn_typescript/analytics.after.ts
+@@ -1,5 +1,4 @@
+ import { v4 as uuidv4 } from 'uuid';
+-import { formatDistance } from 'date-fns';
+ import { trackEvent } from '@segment/analytics-node';
+ import { Logger } from './logger';
+ 
+@@ -23,10 +22,6 @@ export async function trackPageView(url: string, userId?: string): Promise<void>
+     }
+ }
+ 
+-export function calculateSessionDuration(startTime: Date, endTime: Date): string {
+-    return formatDistance(startTime, endTime, { addSuffix: true });
+-}
+-
+ export async function trackUserEngagement(
+     userId: string,
+     actionType: 'click' | 'scroll' | 'hover',
