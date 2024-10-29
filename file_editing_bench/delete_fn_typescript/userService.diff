@@ -1,0 +1,23 @@
+--- a/file_editing_bench/delete_fn_typescript/task_files/userService.ts
++++ b/file_editing_bench/delete_fn_typescript/userService.after.ts
+@@ -24,19 +24,4 @@ export async function createUser(email: string, password: string): Promise<User>
+ export async function deleteUser(userId: string): Promise<void> {
+     const db = new DatabaseConnection();
+     await db.users.delete({ id: userId });
+-}
+-
+-export async function sendPasswordReset(email: string): Promise<void> {
+-    if (!validateEmail(email)) {
+-        throw new Error('Invalid email format');
+-    }
+-    
+-    const db = new DatabaseConnection();
+-    const user = await db.users.findOne({ email });
+-    
+-    if (!user) {
+-        throw new Error('User not found');
+-    }
+-    
+-    await sendWelcomeEmail(user.email);
+ }
+\ No newline at end of file
