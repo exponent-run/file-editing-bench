@@ -1,0 +1,21 @@
+--- a/file_editing_bench/inline_fn_typescript/task_files/processUserData.ts
++++ b/file_editing_bench/inline_fn_typescript/processUserData.after.ts
+@@ -8,17 +8,12 @@ interface UserData {
+     };
+ }
+ 
+-function validateEmailFormat(email: string): boolean {
+-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+-    return emailRegex.test(email) && email.length <= 255;
+-}
+-
+ function processUserRegistration(userData: UserData): { success: boolean; message: string } {
+     if (!userData.name || userData.name.length < 2) {
+         return { success: false, message: 'Name must be at least 2 characters long' };
+     }
+ 
+-    if (!validateEmailFormat(userData.email)) {
++    if (!((/^[^\s@]+@[^\s@]+\.[^\s@]+$/).test(userData.email) && userData.email.length <= 255)) {
+         return { success: false, message: 'Invalid email format' };
+     }
+ 
