@@ -1,4 +1,4 @@
-1. Edit the file `original_code.py` to add environment variable support with these exact changes:
+1. Edit the file `config.py` to add environment variable support with these exact changes:
    - Add get_env_value helper function that:
      - Takes key, default, and required parameters
      - Returns os.environ.get(key) if set, otherwise default
