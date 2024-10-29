@@ -1,11 +1,9 @@
-# Rename Variables in Function
+# Variable Renaming Task
 
-In the file `process_orders.go`, rename the following variables inside the `ProcessDailyOrders` function to be more descriptive:
+In the file `process_orders.go`, rename the following three variables inside the `ProcessDailyOrders` function to be more descriptive:
 
-1. Rename variable `t` to `totalRevenue` (it represents the running sum of order amounts)
-2. Rename variable `n` to `orderCount` (it represents the count of orders processed)
-3. Rename variable `f` to `completedOrders` (it represents the slice of completed orders)
+1. Rename the variable `t` to `totalRevenue`
+2. Rename the variable `n` to `orderCount`
+3. Rename the variable `f` to `completedOrders`
 
-Make sure to update all instances where these variables are used within the function.
-
-The variables should be renamed exactly as specified above, maintaining the same types and functionality.
+Make sure to update all instances where these variables are used within the function. The function signature and return statement should reflect these changes where applicable.

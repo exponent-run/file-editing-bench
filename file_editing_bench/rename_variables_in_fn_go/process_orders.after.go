@@ -4,31 +4,27 @@ import (
 	"time"
 )
 
-// ProcessDailyOrders calculates total revenue and generates summary statistics
-// for orders processed within the last 24 hours
-func ProcessDailyOrders(orders []Order) (*DailySummary, error) {
+type Order struct {
+	ID        int64
+	Total     float64
+	CreatedAt time.Time
+	Status    string
+}
+
+func ProcessDailyOrders(o []Order) (float64, int, error) {
 	var totalRevenue float64
 	var orderCount int
-	var completedOrders []*Order
+	var completedOrders []Order
 
-	for _, o := range orders {
-		if time.Since(o.CreatedAt) <= 24*time.Hour {
-			totalRevenue += o.Amount
-			orderCount++
-			if o.Status == "completed" {
-				completedOrders = append(completedOrders, &o)
+	for _, v := range o {
+		if v.CreatedAt.After(time.Now().Add(-24 * time.Hour)) {
+			if v.Status == "completed" {
+				totalRevenue += v.Total
+				orderCount++
+				completedOrders = append(completedOrders, v)
 			}
 		}
 	}
 
-	if orderCount == 0 {
-		return nil, ErrNoOrders
-	}
-
-	return &DailySummary{
-		TotalRevenue:      totalRevenue,
-		ProcessedOrders:   orderCount,
-		CompletedOrders:   completedOrders,
-		AverageOrderValue: totalRevenue / float64(orderCount),
-	}, nil
+	return totalRevenue, orderCount, nil
 }
