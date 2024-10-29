@@ -1,0 +1,29 @@
+--- a/file_editing_bench/rename_argument_typescript/task_files/processUserData.ts
++++ b/file_editing_bench/rename_argument_typescript/processUserData.after.ts
+@@ -8,20 +8,20 @@ interface UserStats {
+  * Processes user statistics and returns a formatted summary
+  * for administrative purposes.
+  */
+-function generateUserStatsSummary(stats: UserStats, d: number): string {
++function generateUserStatsSummary(stats: UserStats, lookbackDays: number): string {
+   const daysAgo = new Date();
+-  daysAgo.setDate(daysAgo.getDate() - d);
++  daysAgo.setDate(daysAgo.getDate() - lookbackDays);
+   
+   const isRecentlyActive = stats.lastLoginDate >= daysAgo;
+   const accountStatus = stats.accountType === 'premium' ? 'Premium Member' : 'Free Tier';
+   
+   const activityLevel = 
+-    stats.totalLogins > d * 2 ? 'High' :
+-    stats.totalLogins > d ? 'Medium' : 'Low';
++    stats.totalLogins > lookbackDays * 2 ? 'High' :
++    stats.totalLogins > lookbackDays ? 'Medium' : 'Low';
+ 
+   return `User Activity Summary:
+     Account Type: ${accountStatus}
+     Activity Level: ${activityLevel}
+     Recently Active: ${isRecentlyActive ? 'Yes' : 'No'}
+-    Login Frequency: ${(stats.totalLogins / d).toFixed(2)} logins/day`;
++    Login Frequency: ${(stats.totalLogins / lookbackDays).toFixed(2)} logins/day`;
+ }
+\ No newline at end of file
