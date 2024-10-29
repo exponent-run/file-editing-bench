@@ -1,0 +1,21 @@
+--- a/file_editing_bench/combine_fns_into_one_file_typescript/task_files/userAuthentication.ts
++++ b/file_editing_bench/combine_fns_into_one_file_typescript/userAuthentication.after.ts
+@@ -16,4 +16,17 @@ export function validateUserPassword(password: string, storedHash: string): bool
+ function computeHash(password: string, salt: string): string {
+     // Simulated hash computation
+     return `${salt}.${password.split('').reverse().join('')}`;
++}
++
++/**
++ * Creates a new session token for a user
++ * @param userId The ID of the user to create a session for
++ * @param deviceId Optional device identifier
++ * @returns The generated session token
++ */
++export function createSessionToken(userId: string, deviceId?: string): string {
++    const timestamp = Date.now();
++    const randomPart = Math.random().toString(36).substring(2);
++    const sessionData = `${userId}-${timestamp}-${deviceId || 'web'}-${randomPart}`;
++    return Buffer.from(sessionData).toString('base64');
+ }
+\ No newline at end of file
