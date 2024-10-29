@@ -1,0 +1,43 @@
+--- a/file_editing_bench/rename_variables_in_fn_go/task_files/process_orders.go
++++ b/file_editing_bench/rename_variables_in_fn_go/process_orders.after.go
+@@ -7,28 +7,28 @@ import (
+ // ProcessDailyOrders calculates total revenue and generates summary statistics
+ // for orders processed within the last 24 hours
+ func ProcessDailyOrders(orders []Order) (*DailySummary, error) {
+-	var t float64
+-	var n int
+-	var f []*Order
++	var totalRevenue float64
++	var orderCount int
++	var completedOrders []*Order
+ 
+ 	for _, o := range orders {
+ 		if time.Since(o.CreatedAt) <= 24*time.Hour {
+-			t += o.Amount
+-			n++
++			totalRevenue += o.Amount
++			orderCount++
+ 			if o.Status == "completed" {
+-				f = append(f, &o)
++				completedOrders = append(completedOrders, &o)
+ 			}
+ 		}
+ 	}
+ 
+-	if n == 0 {
++	if orderCount == 0 {
+ 		return nil, ErrNoOrders
+ 	}
+ 
+ 	return &DailySummary{
+-		TotalRevenue:      t,
+-		ProcessedOrders:   n,
+-		CompletedOrders:   f,
+-		AverageOrderValue: t / float64(n),
++		TotalRevenue:      totalRevenue,
++		ProcessedOrders:   orderCount,
++		CompletedOrders:   completedOrders,
++		AverageOrderValue: totalRevenue / float64(orderCount),
+ 	}, nil
+ }
+\ No newline at end of file
