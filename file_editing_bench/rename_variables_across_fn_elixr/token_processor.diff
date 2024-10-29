@@ -1,0 +1,56 @@
+--- a/file_editing_bench/rename_variables_across_fn_elixr/task_files/token_processor.ex
++++ b/file_editing_bench/rename_variables_across_fn_elixr/token_processor.after.ex
+@@ -3,8 +3,8 @@ defmodule Auth.TokenProcessor do
+   Handles processing and validation of authentication tokens.
+   """
+ 
+-  def process_token(tkn) do
+-    with {:ok, decoded} <- decode_token(tkn),
++  def process_token(token) do
++    with {:ok, decoded} <- decode_token(token),
+          {:ok, validated} <- validate_token(decoded),
+          {:ok, enriched} <- enrich_token_data(validated) do
+       {:ok, enriched}
+@@ -13,31 +13,31 @@ defmodule Auth.TokenProcessor do
+     end
+   end
+ 
+-  defp decode_token(tkn) do
+-    case Base.decode64(tkn) do
++  defp decode_token(token) do
++    case Base.decode64(token) do
+       {:ok, decoded} -> {:ok, decoded}
+       :error -> {:error, :invalid_encoding}
+     end
+   end
+ 
+-  defp validate_token(tkn) do
++  defp validate_token(token) do
+     cond do
+-      String.length(tkn) < 32 ->
++      String.length(token) < 32 ->
+         {:error, :token_too_short}
+-      not String.printable?(tkn) ->
++      not String.printable?(token) ->
+         {:error, :invalid_characters}
+       true ->
+-        {:ok, tkn}
++        {:ok, token}
+     end
+   end
+ 
+-  defp enrich_token_data(tkn) do
++  defp enrich_token_data(token) do
+     metadata = %{
+-      length: String.length(tkn),
+-      checksum: :crypto.hash(:sha256, tkn) |> Base.encode16(),
++      length: String.length(token),
++      checksum: :crypto.hash(:sha256, token) |> Base.encode16(),
+       timestamp: DateTime.utc_now()
+     }
+     
+-    {:ok, Map.put(metadata, :original_token, tkn)}
++    {:ok, Map.put(metadata, :original_token, token)}
+   end
+ end
+\ No newline at end of file
