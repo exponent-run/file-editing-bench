@@ -1,12 +1,12 @@
---- a/file_editing_bench/add_env_config/task_files/original_code.py
-+++ b/file_editing_bench/add_env_config/original_code.after.py
+--- a/file_editing_bench/add_env_config/task_files/config.py
++++ b/file_editing_bench/add_env_config/config.after.py
 @@ -1,22 +1,39 @@
  import os
 -from typing import Dict, Any
 +from typing import Dict, Any, Optional
  import yaml
- 
- 
+
+
 +def get_env_value(
 +    key: str, default: Any = None, required: bool = False
 +) -> Optional[Any]:
@@ -49,4 +49,4 @@
 +            "password": get_env_value("SMTP_PASSWORD", required=True),
          },
      }
- 
+

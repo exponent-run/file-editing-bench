@@ -1,6 +1,6 @@
 import os
 import pytest
-from task_files.original_code import load_config
+from task_files.config import load_config
 
 
 @pytest.fixture
