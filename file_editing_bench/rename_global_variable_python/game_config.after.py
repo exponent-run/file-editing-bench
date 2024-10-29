@@ -1,35 +1,29 @@
-# Global configuration for the game engine
-FRAMES_PER_SECOND = 60  # Frames per second for the game loop
+# Main game configuration settings
+import pygame
+from typing import Tuple
 
-def initialize_game():
-    global FRAMES_PER_SECOND
-    print(f"Initializing game with {FRAMES_PER_SECOND} FPS")
-    return FRAMES_PER_SECOND
+# Controls the frame rate of the game engine
+FRAMES_PER_SECOND = 60
 
-def update_game_speed(new_speed):
-    global FRAMES_PER_SECOND
-    if 30 <= new_speed <= 144:
-        FRAMES_PER_SECOND = new_speed
-        return True
-    return False
 
-def get_frame_delay():
-    # Calculate delay between frames in milliseconds
-    return 1000 / FRAMES_PER_SECOND
+def get_display_settings() -> Tuple[int, int]:
+    """Returns the display width and height based on game speed"""
+    if FRAMES_PER_SECOND <= 30:
+        return (800, 600)  # Lower resolution for slower speeds
+    else:
+        return (1920, 1080)
 
-class GameEngine:
-    def __init__(self):
-        self.frame_rate = FRAMES_PER_SECOND
-    
-    def run(self):
-        while True:
-            delay = 1000 / FRAMES_PER_SECOND
-            # Game loop implementation...
-            break  # Placeholder to avoid infinite loop
+def update_game_timing(delta_time: float) -> float:
+    """Calculate the game timing based on frame rate"""
+    return delta_time * (60 / FRAMES_PER_SECOND)
 
-# Example usage
-if __name__ == "__main__":
-    engine = GameEngine()
-    print(f"Current game speed: {FRAMES_PER_SECOND}")
-    update_game_speed(120)
-    print(f"Updated game speed: {FRAMES_PER_SECOND}")
+def initialize_game() -> None:
+    """Sets up the game with the configured speed"""
+    pygame.init()
+    clock = pygame.time.Clock()
+    clock.tick(FRAMES_PER_SECOND)
+    print(f"Game initialized at {FRAMES_PER_SECOND} FPS")
+
+def get_animation_frames(total_frames: int) -> int:
+    """Calculate animation frames based on game speed"""
+    return int(total_frames * (FRAMES_PER_SECOND / 60))
