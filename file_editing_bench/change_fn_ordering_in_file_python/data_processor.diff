@@ -1,70 +1,43 @@
 --- a/file_editing_bench/change_fn_ordering_in_file_python/task_files/data_processor.py
 +++ b/file_editing_bench/change_fn_ordering_in_file_python/data_processor.after.py
-@@ -1,31 +1,3 @@
--def process_data(data):
--    """Main function to process data through multiple steps."""
--    validated_data = validate_input(data)
--    transformed_data = transform_data(validated_data)
--    return save_results(transformed_data)
--
--def cleanup_temp_files():
--    """Utility function to clean up temporary files."""
--    import os
--    for file in os.listdir('/tmp'):
--        if file.startswith('data_proc_'):
--            os.remove(os.path.join('/tmp', file))
--
--def save_results(processed_data):
--    """Save the processed results to storage."""
--    with open('output.json', 'w') as f:
--        json.dump(processed_data, f)
--    cleanup_temp_files()
--    return True
--
+@@ -1,8 +1,3 @@
 -def transform_data(data):
--    """Transform the data according to business rules."""
--    return {
--        'processed_at': datetime.now().isoformat(),
--        'values': [x * 2 for x in data['values']],
--        'metadata': enrich_metadata(data['metadata'])
--    }
+-    """Transform the processed data into the final format."""
+-    transformed = {k: v * 2 for k, v in data.items()}
+-    return transformed
 -
- def validate_input(data):
-     """Validate the input data structure."""
+ def load_data(filepath):
+     """Load data from a file."""
+     with open(filepath, 'r') as f:
+@@ -12,12 +7,6 @@ def load_data(filepath):
+             data[key] = float(value)
+     return data
+ 
+-def save_results(filepath, results):
+-    """Save the final results to a file."""
+-    with open(filepath, 'w') as f:
+-        for key, value in results.items():
+-            f.write(f"{key},{value}\n")
+-
+ def validate_data(data):
+     """Validate the loaded data."""
      if not isinstance(data, dict):
-@@ -38,4 +10,32 @@ def enrich_metadata(metadata):
-     """Add additional information to metadata."""
-     metadata['enriched_at'] = datetime.now().isoformat()
-     metadata['version'] = '2.0'
--    return metadata
+@@ -35,4 +24,15 @@ def process_data(data):
+             processed[key] = abs(value)
+         else:
+             processed[key] = value
+-    return processed
 \ No newline at end of file
-+    return metadata
++    return processed
 +
 +def transform_data(data):
-+    """Transform the data according to business rules."""
-+    return {
-+        'processed_at': datetime.now().isoformat(),
-+        'values': [x * 2 for x in data['values']],
-+        'metadata': enrich_metadata(data['metadata'])
-+    }
++    """Transform the processed data into the final format."""
++    transformed = {k: v * 2 for k, v in data.items()}
++    return transformed
 +
-+def save_results(processed_data):
-+    """Save the processed results to storage."""
-+    with open('output.json', 'w') as f:
-+        json.dump(processed_data, f)
-+    cleanup_temp_files()
-+    return True
-+
-+def cleanup_temp_files():
-+    """Utility function to clean up temporary files."""
-+    import os
-+    for file in os.listdir('/tmp'):
-+        if file.startswith('data_proc_'):
-+            os.remove(os.path.join('/tmp', file))
-+
-+def process_data(data):
-+    """Main function to process data through multiple steps."""
-+    validated_data = validate_input(data)
-+    transformed_data = transform_data(validated_data)
-+    return save_results(transformed_data)
++def save_results(filepath, results):
++    """Save the final results to a file."""
++    with open(filepath, 'w') as f:
++        for key, value in results.items():
++            f.write(f"{key},{value}\n")
 \ No newline at end of file
