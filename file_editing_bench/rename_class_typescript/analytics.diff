@@ -1,0 +1,21 @@
+--- a/file_editing_bench/rename_class_typescript/task_files/analytics.ts
++++ b/file_editing_bench/rename_class_typescript/analytics.after.ts
+@@ -18,8 +18,8 @@ class ValidationUtils {
+   }
+ }
+ 
+-// This class needs a more descriptive name
+-class Proc {
++// This class processes and batches metrics
++class MetricBatchProcessor {
+   private db: Database;
+   private readonly batchSize: number = 100;
+   private metricQueue: MetricPayload[] = [];
+@@ -66,4 +66,4 @@ class DashboardConfig {
+   ) {}
+ }
+ 
+-export { Proc, ValidationUtils, DashboardConfig, MetricPayload };
+\ No newline at end of file
++export { MetricBatchProcessor, ValidationUtils, DashboardConfig, MetricPayload };
+\ No newline at end of file
