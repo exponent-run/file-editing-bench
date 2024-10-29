@@ -1,27 +1,36 @@
 --- a/file_editing_bench/rename_variables_in_fn_rust/task_files/process_data.rs
 +++ b/file_editing_bench/rename_variables_in_fn_rust/process_data.after.rs
-@@ -1,19 +1,19 @@
- use std::collections::HashMap;
+@@ -7,24 +7,24 @@ fn calculate_weight(val: f64) -> f64 {
+     (val * 100.0).round() / 100.0
+ }
  
--pub fn analyze_server_metrics(x: Vec<i32>, m: HashMap<String, i32>, t: i32) -> f64 {
-+pub fn analyze_server_metrics(metrics_values: Vec<i32>, metric_indices: HashMap<String, i32>, threshold: i32) -> f64 {
-     let mut s = 0;
-     
-     // Calculate sum of all values above threshold
--    for n in x.iter() {
--        if *n > t {
-+    for n in metrics_values.iter() {
-+        if *n > threshold {
-             s += n;
+-pub fn analyze_server_metrics(x: Vec<f64>, m: Vec<usize>, t: f64) -> Option<f64> {
+-    if x.is_empty() || m.is_empty() {
++pub fn analyze_server_metrics(values: Vec<f64>, metric_indices: Vec<usize>, threshold: f64) -> Option<f64> {
++    if values.is_empty() || metric_indices.is_empty() {
+         return None;
+     }
+ 
+-    let mut result = 0.0;
+-    for i in m.iter() {
+-        if *i >= x.len() {
++    let mut weighted_sum = 0.0;
++    for index in metric_indices.iter() {
++        if *index >= values.len() {
+             return None;
+         }
+         
+-        if x[*i] > t {
+-            result += calculate_weight(x[*i]);
++        if values[*index] > threshold {
++            weighted_sum += calculate_weight(values[*index]);
          }
      }
  
-     // Apply weights from the mapping
-     let mut r = 0.0;
--    for (k, v) in m.iter() {
--        if let Some(n) = x.get(*v as usize) {
-+    for (k, v) in metric_indices.iter() {
-+        if let Some(n) = metrics_values.get(*v as usize) {
-             r += *n as f64 * calculate_weight(k);
-         }
+-    if result > 0.0 {
+-        Some(result)
++    if weighted_sum > 0.0 {
++        Some(weighted_sum)
+     } else {
+         None
      }

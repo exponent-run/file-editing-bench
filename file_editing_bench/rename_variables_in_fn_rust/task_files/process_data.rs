@@ -1,35 +1,43 @@
-use std::collections::HashMap;
+pub struct Metric {
+    index: usize,
+    value: f64,
+}
 
-pub fn analyze_server_metrics(x: Vec<i32>, m: HashMap<String, i32>, t: i32) -> f64 {
-    let mut s = 0;
-    
-    // Calculate sum of all values above threshold
-    for n in x.iter() {
-        if *n > t {
-            s += n;
+fn calculate_weight(val: f64) -> f64 {
+    (val * 100.0).round() / 100.0
+}
+
+pub fn analyze_server_metrics(x: Vec<f64>, m: Vec<usize>, t: f64) -> Option<f64> {
+    if x.is_empty() || m.is_empty() {
+        return None;
+    }
+
+    let mut result = 0.0;
+    for i in m.iter() {
+        if *i >= x.len() {
+            return None;
+        }
+        
+        if x[*i] > t {
+            result += calculate_weight(x[*i]);
         }
     }
 
-    // Apply weights from the mapping
-    let mut r = 0.0;
-    for (k, v) in m.iter() {
-        if let Some(n) = x.get(*v as usize) {
-            r += *n as f64 * calculate_weight(k);
-        }
-    }
-
-    // Return weighted average
-    if s > 0 {
-        r / s as f64
+    if result > 0.0 {
+        Some(result)
     } else {
-        0.0
+        None
     }
 }
 
-fn calculate_weight(metric_name: &str) -> f64 {
-    match metric_name {
-        "cpu" => 2.0,
-        "memory" => 1.5,
-        _ => 1.0,
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn test_analyze_metrics() {
+        let values = vec![1.5, 2.7, 3.2, 4.8, 5.1];
+        let indices = vec![1, 3, 4];
+        assert_eq!(analyze_server_metrics(values, indices, 3.0), Some(12.60));
     }
 }
