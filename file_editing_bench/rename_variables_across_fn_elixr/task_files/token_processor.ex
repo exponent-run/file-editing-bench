@@ -4,10 +4,9 @@ defmodule Auth.TokenProcessor do
   """
 
   def process_token(tkn) do
-    with {:ok, decoded} <- decode_token(tkn),
-         {:ok, validated} <- validate_token(decoded),
-         {:ok, enriched} <- enrich_token_data(validated) do
-      {:ok, enriched}
+    with {:ok, dec} <- decode_token(tkn),
+         {:ok, val} <- validate_token(dec) do
+      {:ok, extract_claims(val)}
     else
       {:error, reason} -> {:error, reason}
     end
@@ -15,29 +14,21 @@ defmodule Auth.TokenProcessor do
 
   defp decode_token(tkn) do
     case Base.decode64(tkn) do
-      {:ok, decoded} -> {:ok, decoded}
+      {:ok, dec} -> {:ok, dec}
       :error -> {:error, :invalid_encoding}
     end
   end
 
-  defp validate_token(tkn) do
-    cond do
-      String.length(tkn) < 32 ->
-        {:error, :token_too_short}
-      not String.printable?(tkn) ->
-        {:error, :invalid_characters}
-      true ->
-        {:ok, tkn}
+  defp validate_token(dec) do
+    case String.split(dec, ".", parts: 3) do
+      [_h, p, _s] = val when byte_size(p) > 0 -> {:ok, val}
+      _ -> {:error, :invalid_format}
     end
   end
 
-  defp enrich_token_data(tkn) do
-    metadata = %{
-      length: String.length(tkn),
-      checksum: :crypto.hash(:sha256, tkn) |> Base.encode16(),
-      timestamp: DateTime.utc_now()
-    }
-    
-    {:ok, Map.put(metadata, :original_token, tkn)}
+  defp extract_claims([_h, p, _s]) do
+    p
+    |> Base.decode64!()
+    |> Jason.decode!()
   end
 end

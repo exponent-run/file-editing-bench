@@ -4,10 +4,9 @@ defmodule Auth.TokenProcessor do
   """
 
   def process_token(token) do
-    with {:ok, decoded} <- decode_token(token),
-         {:ok, validated} <- validate_token(decoded),
-         {:ok, enriched} <- enrich_token_data(validated) do
-      {:ok, enriched}
+    with {:ok, decoded_token} <- decode_token(token),
+         {:ok, token_parts} <- validate_token(decoded_token) do
+      {:ok, extract_claims(token_parts)}
     else
       {:error, reason} -> {:error, reason}
     end
@@ -15,29 +14,21 @@ defmodule Auth.TokenProcessor do
 
   defp decode_token(token) do
     case Base.decode64(token) do
-      {:ok, decoded} -> {:ok, decoded}
+      {:ok, decoded_token} -> {:ok, decoded_token}
       :error -> {:error, :invalid_encoding}
     end
   end
 
-  defp validate_token(token) do
-    cond do
-      String.length(token) < 32 ->
-        {:error, :token_too_short}
-      not String.printable?(token) ->
-        {:error, :invalid_characters}
-      true ->
-        {:ok, token}
+  defp validate_token(decoded_token) do
+    case String.split(decoded_token, ".", parts: 3) do
+      [_h, payload, _s] = token_parts when byte_size(payload) > 0 -> {:ok, token_parts}
+      _ -> {:error, :invalid_format}
     end
   end
 
-  defp enrich_token_data(token) do
-    metadata = %{
-      length: String.length(token),
-      checksum: :crypto.hash(:sha256, token) |> Base.encode16(),
-      timestamp: DateTime.utc_now()
-    }
-    
-    {:ok, Map.put(metadata, :original_token, token)}
+  defp extract_claims([_h, payload, _s]) do
+    payload
+    |> Base.decode64!()
+    |> Jason.decode!()
   end
 end

@@ -1,12 +1,10 @@
-# Rename Variables Across Functions
+# Variable Renaming Task
 
-In the file `token_processor.ex`, there is a variable named `tkn` that is used across multiple functions. This abbreviated name is not descriptive enough and should be renamed to `token` across all functions to improve code readability.
+In the file `token_processor.ex`, several variables have unclear, abbreviated names that make the code harder to understand. Your task is to rename these variables to be more descriptive while maintaining the functionality. Make the following specific changes:
 
-The variable appears in the following functions:
-- As a parameter in `process_token/1`
-- As a parameter in `decode_token/1`
-- As a parameter in `validate_token/1`
-- As a parameter in `enrich_token_data/1`
-- In various function bodies where the parameter is used
+1. Rename `tkn` to `token`
+2. Rename `dec` to `decoded_token`
+3. Rename `val` to `token_parts`
+4. Rename `p` to `payload`
 
-Rename all occurrences of `tkn` to `token` while maintaining the exact same functionality. Make sure to update all instances consistently.
+Make sure to update all occurrences of these variables consistently throughout the file, including function parameters and pattern matching contexts.
