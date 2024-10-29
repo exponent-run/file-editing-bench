@@ -1,0 +1,21 @@
+--- a/file_editing_bench/rename_function_rust/task_files/network_utils.rs
++++ b/file_editing_bench/rename_function_rust/network_utils.after.rs
+@@ -15,8 +15,7 @@ impl NetworkClient {
+         }
+     }
+ 
+-    // This function name 'proc' is not descriptive and should be renamed
+-    pub fn proc(&mut self, host: &str, data: &[u8]) -> io::Result<Vec<u8>> {
++    pub fn process_request(&mut self, host: &str, data: &[u8]) -> io::Result<Vec<u8>> {
+         let stream = match self.connections.get_mut(host) {
+             Some(stream) => stream,
+             None => {
+@@ -49,7 +48,7 @@ mod tests {
+     #[test]
+     fn test_connection_lifecycle() {
+         let mut client = NetworkClient::new(5000);
+-        let result = client.proc("localhost:8080", b"test data");
++        let result = client.process_request("localhost:8080", b"test data");
+         assert!(result.is_err()); // Expected since no server is running
+         
+         client.close_connection("localhost:8080").unwrap();
