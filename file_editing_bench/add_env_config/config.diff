@@ -5,8 +5,8 @@
 -from typing import Dict, Any
 +from typing import Dict, Any, Optional
  import yaml
-
-
+ 
+ 
 +def get_env_value(
 +    key: str, default: Any = None, required: bool = False
 +) -> Optional[Any]:
@@ -49,4 +49,4 @@
 +            "password": get_env_value("SMTP_PASSWORD", required=True),
          },
      }
-
+ 

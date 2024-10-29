@@ -1,0 +1,36 @@
+--- a/file_editing_bench/rename_argument_typescript/task_files/imageProcessor.ts
++++ b/file_editing_bench/rename_argument_typescript/imageProcessor.after.ts
+@@ -7,17 +7,17 @@ interface ImageMetadata {
+ 
+ /**
+  * Processes an image and returns metadata about the processed result
+- * @param p The buffer containing the raw image data
++ * @param imageBuffer The buffer containing the raw image data
+  * @param opts Additional processing options
+  */
+-export function processImage(p: Buffer, opts: {
++export function processImage(imageBuffer: Buffer, opts: {
+   maxWidth?: number;
+   maxHeight?: number;
+   convertTo?: 'jpeg' | 'png' | 'webp';
+   quality?: number;
+ }): Promise<ImageMetadata> {
+   // Validate the input buffer
+-  if (!p || p.length === 0) {
++  if (!imageBuffer || imageBuffer.length === 0) {
+     throw new Error('Invalid image buffer provided');
+   }
+ 
+@@ -29,10 +29,10 @@ export function processImage(p: Buffer, opts: {
+     quality: opts.quality || 80
+   };
+ 
+-  // Here we would process p (the image buffer) with the provided options
++  // Here we would process imageBuffer (the image buffer) with the provided options
+   // This is just a mock implementation
+   const mockProcess = async () => {
+-    const size = p.length;
++    const size = imageBuffer.length;
+     return {
+       width: Math.min(size % 1000, finalOpts.maxWidth),
+       height: Math.min(size % 800, finalOpts.maxHeight),
