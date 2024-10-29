@@ -1,21 +1,17 @@
-def calculate_discount_multiplier(years_as_customer, purchase_amount):
-    """Helper function to calculate a customer's discount multiplier based on loyalty"""
-    base_multiplier = 0.95  # 5% base discount
-    loyalty_bonus = min(years_as_customer * 0.01, 0.15)  # Up to 15% loyalty bonus
-    volume_bonus = 0.05 if purchase_amount > 1000 else 0
-    return base_multiplier - loyalty_bonus - volume_bonus
+def calculate_loyalty_points(purchase_amount, membership_years):
+    """Calculate loyalty points for a customer based on purchase amount and membership years."""
+    points = _apply_membership_multiplier(purchase_amount * 10, membership_years)
+    
+    if points > 10000:
+        points *= 1.1  # bonus for high spenders
+    
+    return int(points)
 
-def process_customer_purchase(customer_name, years_as_customer, purchase_amount):
-    """Process a customer purchase and apply appropriate discounts"""
-    if not isinstance(purchase_amount, (int, float)) or purchase_amount <= 0:
-        raise ValueError("Purchase amount must be a positive number")
-    
-    multiplier = calculate_discount_multiplier(years_as_customer, purchase_amount)
-    final_price = purchase_amount * multiplier
-    
-    return {
-        "customer": customer_name,
-        "original_amount": purchase_amount,
-        "final_price": round(final_price, 2),
-        "savings": round(purchase_amount - final_price, 2)
-    }
+def _apply_membership_multiplier(base_points, years):
+    """Helper function to apply membership year multiplier to points."""
+    if years <= 1:
+        return base_points
+    elif years <= 5:
+        return base_points * 1.2
+    else:
+        return base_points * 1.5
