@@ -1,0 +1,23 @@
+--- a/file_editing_bench/rename_argument_typescript/task_files/userAuthentication.ts
++++ b/file_editing_bench/rename_argument_typescript/userAuthentication.after.ts
+@@ -6,17 +6,17 @@ interface UserCredentials {
+ export class AuthenticationService {
+   private readonly tokenExpirationMs = 3600000; // 1 hour
+ 
+-  async validateUserCredentials(p: UserCredentials, t: number = this.tokenExpirationMs): Promise<{
++  async validateUserCredentials(credentials: UserCredentials, tokenValidityMs: number = this.tokenExpirationMs): Promise<{
+     isValid: boolean;
+     token?: string;
+     expiresAt?: Date;
+   }> {
+-    if (!this.isValidEmail(p.email) || !this.isStrongPassword(p.password)) {
++    if (!this.isValidEmail(credentials.email) || !this.isStrongPassword(credentials.password)) {
+       return { isValid: false };
+     }
+ 
+     const token = await this.generateSecureToken();
+-    const expiresAt = new Date(Date.now() + t);
++    const expiresAt = new Date(Date.now() + tokenValidityMs);
+ 
+     return {
+       isValid: true,

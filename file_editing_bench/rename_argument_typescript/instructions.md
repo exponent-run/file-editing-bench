@@ -1,9 +1,11 @@
-# Rename Argument Task
+# Rename Arguments Task
 
-In the file `processUserData.ts`, there is a function `generateUserStatsSummary` that takes two parameters:
-1. `stats: UserStats`
-2. `d: number`
+In the file `userAuthentication.ts`, there is a method `validateUserCredentials` in the `AuthenticationService` class that takes two parameters:
+1. `p: UserCredentials`
+2. `t: number`
 
-The parameter `d` is used throughout the function to represent the number of days to look back for the analysis. Rename this parameter from `d` to `lookbackDays` to make the code more readable and self-documenting.
+These parameter names are not descriptive. Rename them as follows:
+- Rename `p` to `credentials` since it represents the user credentials containing email and password
+- Rename `t` to `tokenValidityMs` since it represents the duration in milliseconds for which the authentication token should remain valid
 
-Make sure to update all occurrences of this parameter within the function body as well.
+Make sure to update all occurrences of these parameters within the method body as well.
