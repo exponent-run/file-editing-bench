@@ -1,0 +1,11 @@
+--- a/file_editing_bench/rename_function_python/task_files/data_processor.py
++++ b/file_editing_bench/rename_function_python/data_processor.after.py
+@@ -3,7 +3,7 @@ from typing import Dict, List, Any
+ from datetime import datetime
+ 
+ 
+-def p(data: List[Dict[str, Any]]) -> List[Dict[str, Any]]:
++def process_and_standardize_records(data: List[Dict[str, Any]]) -> List[Dict[str, Any]]:
+     """
+     Process a list of data records by:
+     1. Removing any empty records

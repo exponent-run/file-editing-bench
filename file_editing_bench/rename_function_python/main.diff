@@ -1,0 +1,21 @@
+--- a/file_editing_bench/rename_function_python/task_files/main.py
++++ b/file_editing_bench/rename_function_python/main.after.py
+@@ -1,4 +1,8 @@
+-from data_processor import p, load_json_file, save_json_file
++from data_processor import (
++    process_and_standardize_records,
++    load_json_file,
++    save_json_file,
++)
+ 
+ 
+ def main():
+@@ -10,7 +14,7 @@ def main():
+     ]
+ 
+     # Process the data
+-    processed_data = p(input_data)
++    processed_data = process_and_standardize_records(input_data)
+ 
+     # Print results
+     for record in processed_data:

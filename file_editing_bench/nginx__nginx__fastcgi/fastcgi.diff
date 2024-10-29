@@ -1,6 +1,6 @@
---- file_editing_bench/nginx__nginx__fastcgi/fastcgi.conf
-+++ file_editing_bench/nginx__nginx__fastcgi/fastcgi.after.conf
-@@ -21,6 +21,7 @@
+--- a/file_editing_bench/nginx__nginx__fastcgi/task_files/fastcgi.conf
++++ b/file_editing_bench/nginx__nginx__fastcgi/fastcgi.after.conf
+@@ -21,6 +21,7 @@ fastcgi_param  REMOTE_PORT        $remote_port;
  fastcgi_param  SERVER_ADDR        $server_addr;
  fastcgi_param  SERVER_PORT        $server_port;
  fastcgi_param  SERVER_NAME        $server_name;
