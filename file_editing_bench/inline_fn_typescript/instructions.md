@@ -9,3 +9,4 @@ This task requires:
 2. Removing the original `validateEmailFormat` function declaration
 3. Maintaining the exact same functionality and validation logic
 4. Keeping all type annotations and interfaces unchanged
+5. Maintaining the same amount of whitespace between functions and declarations
