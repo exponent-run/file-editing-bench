@@ -1,50 +1,26 @@
-def load_student_data(lst):
-    students = []
-    for student in lst:
-        if isinstance(student, dict):
-            students.append({
-                'name': student.get('name'),
-                'score': student.get('score', 0),
-                'grade': calculate_grade(student.get('score', 0))
-            })
-    return students
+def calculate_final_score(scores):
+    hw_scores = get_homework_scores(scores)
+    exam_scores = get_exam_scores(scores)
+    
+    total = sum(hw_scores) * 0.4 + sum(exam_scores) * 0.6
+    return round(total, 2)
 
-def calculate_grade(score):
-    if score >= 90:
-        return 'A'
-    elif score >= 80:
-        return 'B'
-    elif score >= 70:
-        return 'C'
-    elif score >= 60:
-        return 'D'
-    else:
-        return 'F'
+def get_homework_scores(scores):
+    return [score for score in scores if score < 100]
 
-def get_class_statistics(students):
-    if not students:
-        return None
+def get_exam_scores(scores):
+    return [score for score in scores if score >= 100]
+
+def generate_report(scores):
+    hw = get_homework_scores(scores)
+    exams = get_exam_scores(scores)
     
-    total = 0
-    count = len(students)
-    
-    for student in students:
-        total += student.get('score', 0)
-    
-    avg = total / count if count > 0 else 0
-    return {
-        'average': avg,
-        'total_students': count,
-        'passing_rate': calculate_passing_rate(students)
+    report = {
+        'homework_avg': sum(hw) / len(hw) if hw else 0,
+        'exam_avg': sum(exams) / len(exams) if exams else 0,
+        'final_score': calculate_final_score(scores)
     }
+    return report
 
-def calculate_passing_rate(students):
-    if not students:
-        return 0.0
-    
-    passing = 0
-    for student in students:
-        if student.get('score', 0) >= 60:
-            passing += 1
-    
-    return (passing / len(students)) * 100
+def process_class_data(all_scores):
+    return [generate_report(scores) for scores in all_scores]
