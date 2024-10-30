@@ -1,0 +1,70 @@
+--- a/file_editing_bench/change_fn_ordering_in_class_typescript/task_files/DataAnalytics.ts
++++ b/file_editing_bench/change_fn_ordering_in_class_typescript/DataAnalytics.after.ts
+@@ -7,24 +7,8 @@ class DataAnalytics {
+         this.processedData = new Map();
+     }
+ 
+-    calculateMedian(): number {
+-        const sorted = [...this.data].sort((a, b) => a - b);
+-        const mid = Math.floor(sorted.length / 2);
+-        return sorted.length % 2 === 0
+-            ? (sorted[mid - 1] + sorted[mid]) / 2
+-            : sorted[mid];
+-    }
+-
+-    private validateData(): boolean {
+-        return this.data.every(item => typeof item === 'number' && !isNaN(item));
+-    }
+-
+-    getProcessedResults(): Map<string, number> {
+-        return this.processedData;
+-    }
+-
+-    calculateMean(): number {
+-        return this.data.reduce((sum, val) => sum + val, 0) / this.data.length;
++    getData(): number[] {
++        return [...this.data];
+     }
+ 
+     addDataPoint(value: number): void {
+@@ -32,6 +16,10 @@ class DataAnalytics {
+         this.processData();
+     }
+ 
++    private validateData(): boolean {
++        return this.data.every(item => typeof item === 'number' && !isNaN(item));
++    }
++
+     private processData(): void {
+         if (!this.validateData()) {
+             throw new Error("Invalid data detected");
+@@ -41,6 +29,18 @@ class DataAnalytics {
+         this.processedData.set('stdDev', this.calculateStandardDeviation());
+     }
+ 
++    calculateMean(): number {
++        return this.data.reduce((sum, val) => sum + val, 0) / this.data.length;
++    }
++
++    calculateMedian(): number {
++        const sorted = [...this.data].sort((a, b) => a - b);
++        const mid = Math.floor(sorted.length / 2);
++        return sorted.length % 2 === 0
++            ? (sorted[mid - 1] + sorted[mid]) / 2
++            : sorted[mid];
++    }
++
+     calculateStandardDeviation(): number {
+         const mean = this.calculateMean();
+         const squareDiffs = this.data.map(value => {
+@@ -50,7 +50,7 @@ class DataAnalytics {
+         return Math.sqrt(squareDiffs.reduce((sum, val) => sum + val, 0) / this.data.length);
+     }
+ 
+-    getData(): number[] {
+-        return [...this.data];
++    getProcessedResults(): Map<string, number> {
++        return this.processedData;
+     }
+ }
+\ No newline at end of file
