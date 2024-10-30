@@ -1,0 +1,13 @@
+--- a/file_editing_bench/rename_argument_python/task_files/weather_processor.py
++++ b/file_editing_bench/rename_argument_python/weather_processor.after.py
+@@ -1,8 +1,8 @@
+-def process_weather_data(d, temp_threshold, include_precipitation=False):
++def process_weather_data(weather_entries, temp_threshold, include_precipitation=False):
+     """Process weather station data and identify significant weather events."""
+     processed_data = []
+     
+-    for entry in d:
++    for entry in weather_entries:
+         if entry['temperature'] > temp_threshold:
+             event = {
+                 'timestamp': entry['timestamp'],
