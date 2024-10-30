@@ -1,0 +1,47 @@
+--- a/file_editing_bench/rename_global_variable_typescript/task_files/auth.ts
++++ b/file_editing_bench/rename_global_variable_typescript/auth.after.ts
+@@ -1,6 +1,6 @@
+ import { User } from './types';
+ 
+-const maxLoginAttempts = 3;
++const MAX_AUTHENTICATION_ATTEMPTS = 3;
+ 
+ export class AuthenticationService {
+     private loginAttempts: Map<string, number> = new Map();
+@@ -8,7 +8,7 @@ export class AuthenticationService {
+     async authenticateUser(username: string, password: string): Promise<User | null> {
+         const currentAttempts = this.loginAttempts.get(username) || 0;
+         
+-        if (currentAttempts >= maxLoginAttempts) {
++        if (currentAttempts >= MAX_AUTHENTICATION_ATTEMPTS) {
+             throw new Error('Account locked due to too many failed attempts');
+         }
+ 
+@@ -20,21 +20,21 @@ export class AuthenticationService {
+ 
+         this.loginAttempts.set(username, currentAttempts + 1);
+         
+-        if (currentAttempts + 1 >= maxLoginAttempts) {
+-            console.log(`User ${username} reached maximum login attempts of ${maxLoginAttempts}`);
++        if (currentAttempts + 1 >= MAX_AUTHENTICATION_ATTEMPTS) {
++            console.log(`User ${username} reached maximum login attempts of ${MAX_AUTHENTICATION_ATTEMPTS}`);
+         }
+ 
+         return null;
+     }
+ 
+     resetLoginAttempts(username: string): void {
+-        if (this.loginAttempts.get(username) >= maxLoginAttempts) {
+-            console.log(`Resetting attempts counter from ${maxLoginAttempts} to 0`);
++        if (this.loginAttempts.get(username) >= MAX_AUTHENTICATION_ATTEMPTS) {
++            console.log(`Resetting attempts counter from ${MAX_AUTHENTICATION_ATTEMPTS} to 0`);
+         }
+         this.loginAttempts.delete(username);
+     }
+ }
+ 
+ export function getMaxAttempts(): number {
+-    return maxLoginAttempts;
++    return MAX_AUTHENTICATION_ATTEMPTS;
+ }
+\ No newline at end of file
