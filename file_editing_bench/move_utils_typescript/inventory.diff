@@ -1,0 +1,70 @@
+--- a/file_editing_bench/move_utils_typescript/task_files/inventory.ts
++++ b/file_editing_bench/move_utils_typescript/inventory.after.ts
+@@ -1,14 +1,6 @@
+ import { v4 as uuidv4 } from 'uuid';
+ import { DateTime } from 'luxon';
+-import { z } from 'zod';
+-import { 
+-  formatCurrency, 
+-  calculateDiscount, 
+-  validateItemName, 
+-  generateItemDescription,
+-  sortByRarity,
+-  calculateTotalValue
+-} from './utils';
++import { validateItemName } from './utils';
+ 
+ // Item rarity enum
+ export enum ItemRarity {
+@@ -29,6 +21,51 @@ export interface InventoryItem {
+   acquiredAt: string;
+ }
+ 
++function calculateDiscount(value: number, rarity: ItemRarity): number {
++  const currentHour = DateTime.now().hour;
++  // Apply "happy hour" discount between 2-4 PM
++  if (currentHour >= 14 && currentHour < 16) {
++    return value * 0.9; // 10% discount
++  }
++  return value;
++}
++
++function formatCurrency(amount: number): string {
++  return new Intl.NumberFormat('en-US', {
++    style: 'currency',
++    currency: 'USD',
++    minimumFractionDigits: 2
++  }).format(amount);
++}
++
++function generateItemDescription(name: string, rarity: ItemRarity): string {
++  const rarityDescriptions = {
++    [ItemRarity.COMMON]: 'A common',
++    [ItemRarity.UNCOMMON]: 'An uncommon',
++    [ItemRarity.RARE]: 'A rare',
++    [ItemRarity.EPIC]: 'An epic',
++    [ItemRarity.LEGENDARY]: 'A legendary'
++  };
++
++  return `${rarityDescriptions[rarity]} ${name.toLowerCase()} of great interest.`;
++}
++
++function sortByRarity(items: InventoryItem[]): InventoryItem[] {
++  const rarityOrder = {
++    [ItemRarity.LEGENDARY]: 0,
++    [ItemRarity.EPIC]: 1,
++    [ItemRarity.RARE]: 2,
++    [ItemRarity.UNCOMMON]: 3,
++    [ItemRarity.COMMON]: 4
++  };
++
++  return items.sort((a, b) => rarityOrder[a.rarity] - rarityOrder[b.rarity]);
++}
++
++function calculateTotalValue(items: InventoryItem[]): number {
++  return items.reduce((total, item) => total + item.value, 0);
++}
++
+ export class InventoryManager {
+   private items: InventoryItem[] = [];
+ 
