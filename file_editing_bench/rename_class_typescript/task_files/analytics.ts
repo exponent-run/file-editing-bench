@@ -18,7 +18,6 @@ class ValidationUtils {
   }
 }
 
-// This class needs a more descriptive name
 class Proc {
   private db: Database;
   private readonly batchSize: number = 100;
