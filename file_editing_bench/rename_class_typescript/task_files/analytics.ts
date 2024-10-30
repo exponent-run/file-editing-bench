@@ -18,6 +18,7 @@ class ValidationUtils {
   }
 }
 
+// This class processes and batches metrics
 class Proc {
   private db: Database;
   private readonly batchSize: number = 100;
